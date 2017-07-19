@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %} IET Results  {% endblock %}
+
+{% block body %}
+<div class="col-md-4 col-sm-6 col-xs-11 col-md-offset-4" style="margin-top:50px;">
+	<form id="r_form" method="GET" action="{% url 'result' %}">
+	<h2>RESULTS!</h2>
+		{% csrf_token %}
+	<center>
+	<table>
+		<tr>
+			<td><label>Batch:</label></td>
+			<td class="select"><select id="year" name="y" class="form-control" required>
+				<option value="">--Batch--</option>
+				{% for x in batches %}
+					<option value="{{x.id}}">{{ x.batchy }}</option>
+				{% endfor %}
+				</select></td>
+		</tr>
+		<tr>	
+			<td><label>Branch:</label></td>
+			<td class="select"><select name="branch" id="branch" class="form-control">
+				<option value="IT-A">IT-A</option>
+				<option value="CSE-A">CSE-A</option>
+				<option value="TC-A">TC-A</option>
+				<option value="MECH">MECH</option>
+				</select></td>
+		</tr>
+		<tr>
+			<td><label>Semester:</label></td>
+			<td class="select"><select id="sem" name="sem" class="form-control" required>
+					<option value="">-Select Sem--</option>
+				</select></td>
+		</tr>
+		<tr>
+			<td colspan="2"><center><input type="submit" name="submit" value="GO!" class="btn btn-default" style="background:orange;"></center></td>
+		</tr>
+	</table></center>
+	</form>
+</div>
+<script type="text/javascript">
+	$("#year").change(function() {
+        value = $("#year option:selected").val();
+		semurl="{% url 'batchs' %}"+value;
+		$.get(semurl,function(data,status){
+			$('#sem').html('');
+			$.each(data, function(i, val) {
+          	  $('#sem').append($('<option>').text(val).attr('value', val));
+        	});
+		});
+    });
+</script>
+<style type="text/css">
+	html{box-sizing: border-box;height:100%;}
+	body{background:linear-gradient(to top,rgba(255, 76, 0,0.2),white 60%) no-repeat;}
+	table{margin-top:30px;}
+	table tr td{padding: 5px 10px 20px 5px;}
+	.select{width:150px;}
+	form{ box-shadow:1px 1px 10px grey;border-radius:8px;background:white;}
+	h2{background:orange;color:white;margin:0;text-align: center;padding:10px;border-radius:8px 8px 0 0 ;}
+</style>
+
+{% endblock body %}

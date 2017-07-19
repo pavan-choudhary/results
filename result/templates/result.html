@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %} {{info.b}} | sem {{info.s}} {% endblock %}
+
+{% block body %}
+{% load static %}
+<script src="{% static 'tableHeadFixer.js' %}"></script>
+<div><h3 style="text-align:center">{{info.y}} <span class="glyphicon glyphicon-chevron-right"></span> {{info.b}} <span class="glyphicon glyphicon-chevron-right"></span> Semester{{info.s}}</h3></div>
+<div id="parent">
+<table class="col-md-12 table" id="fixTable">
+	{%	for x,y in result	%}<!--mainloop-->
+		{% if forloop.counter == 1 %}
+		<thead>	
+		{% for sub in y %}		<!--subloop-->
+			{% if forloop.counter <= 2 %}
+      			 <tr>
+      			 {% if forloop.counter == 2 %}
+					<th></th><th></th><th></th>
+				{% endif %}
+      			 	{% for subsub in sub %}		<!--subsubloop-->
+      			 		{% if forloop.parentloop.counter == 2 %}
+      			 			{% if forloop.counter > 3 %}
+      			 				<th>{{subsub}}</th>
+      			 			{% endif %}
+      			 			{% else %}
+      			 			<th>{{subsub}}</th>
+
+      			 		{% endif %}   			 		
+					{% endfor %}
+				 </tr>
+    		{% endif %}
+    	{% endfor %}</thead>
+    	{% endif %}
+    {% endfor %}
+    <tbody>
+	{%	for x,y in result	%}
+    	{% for sub in y %}	
+    		{% if forloop.counter > 2 %}
+			<tr>
+			{% for subsub in sub %}
+			<td>
+				{{subsub}}
+			</td>
+			{% endfor %}
+			</tr>
+			{% endif %}
+		{% endfor %}
+	{% endfor %}
+	</tbody>
+</table>
+</div>
+
+<style>
+body{overflow-y:hidden;overflow-x:visible;}
+table, td,th { border: 1px solid teal; border-collapse: collapse;}
+thead tr th, td{text-align: center;}
+
+thead tr:first-child{background:#ffe83a;font-size:11px;padding:0;}
+tr:nth-child(even){background:#efefef;}
+
+thead tr th:nth-child(n){border:none;}
+
+thead tr th:nth-child(6),thead tr th:nth-child(8),thead tr th:nth-child(10){border-right:1px solid rgba(0,0,0,0.3);}
+thead tr th:nth-child(5){border-left:1px solid rgba(0,0,0,0.3);}
+
+thead tr:nth-child(2) th{font-size:10px;background:#f5ff6b;padding:0;}
+
+td:nth-child(3){color:navy;font-weight:bold;width:80px;}
+td:nth-child(4),td:nth-child(5),td:nth-child(6),td:nth-child(7),td:nth-child(8),td:nth-child(9),td:nth-child(10),td:nth-child(11),td:nth-child(12),td:nth-child(13),td:nth-child(14){ width:1em; }
+td:last-child{padding:20px;color:red;font-weight:bolder;width:100px;}
+tr:nth-child(2) td:last-child{padding:0;}
+#parent{height:500px;width:100%;}
+</style>
+<script type="text/javascript">
+			$(document).ready(function() {
+				$("#fixTable").tableHeadFixer();
+
+			});
+</script>
+{% endblock body %}
